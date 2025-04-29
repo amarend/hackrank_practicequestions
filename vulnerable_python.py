@@ -16,9 +16,16 @@ def run_command():
 
 @app.route("/eval", methods=["POST"])
 def eval_code():
-    code = request.form.get("code")
+    #code = request.form.get("code")
     # 🧨 Arbitrary code execution vulnerability
-    return str(eval(code))
+    #return str(eval(code))
+    #The fixed code will look as below 
+    code = request.form.get("code")
+    try:
+        result = ast.literal_eval(code)
+    except (ValueError, SyntaxError):
+        result = "Invalid input"
+    return str(result)
 
 def insecure_hashing(password):
     import hashlib
