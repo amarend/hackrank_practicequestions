@@ -28,9 +28,25 @@ def eval_code():
     return str(result)
 
 def insecure_hashing(password):
+    #Changing to secure hashing
     import hashlib
+    import base64
     # 🧨 Insecure hashing algorithm (MD5)
-    return hashlib.md5(password.encode()).hexdigest()
+    #return hashlib.md5(password.encode()).hexdigest()
+    salt = os.urandom(16)
+
+    # Hash the password using scrypt
+    key = hashlib.scrypt(
+        password.encode(),
+        salt=salt,
+        n=2**14,       # CPU/memory cost factor (16384)
+        r=8,           # block size
+        p=1,           # parallelization factor
+        dklen=64       # desired key length
+    )
+
+    # Store salt and hash together (base64-encoded)
+    return base64.b64encode(salt + key).decode()
 
 # 🧨 Unsafe YAML loading
 import yaml
