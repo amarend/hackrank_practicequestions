@@ -28,8 +28,13 @@ def ping():
 # 3. Insecure Deserialization
 @app.route("/load", methods=["POST"])
 def load_data():
+    import json
     data = request.form.get("data")
-    obj = pickle.loads(data.encode())
+    #obj = pickle.loads(data.encode())
+    try:
+       obj = json.loads(data)
+    except json.JSONDecodeError:
+        return "Invalid input"
     return str(obj)
 
 # 4. Hardcoded Credentials
