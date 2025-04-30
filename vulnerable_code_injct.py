@@ -20,7 +20,10 @@ def get_user():
 @app.route("/ping")
 def ping():
     ip = request.args.get("ip")
-    return subprocess.check_output("ping -c 1 " + ip, shell=True)
+    #Shell true can cause failures so we can use the []
+    
+    #return subprocess.check_output("ping -c 1 " + ip, shell=True)
+    return subprocess.check_output(['ping', '-c', '1' , ip])
 
 # 3. Insecure Deserialization
 @app.route("/load", methods=["POST"])
