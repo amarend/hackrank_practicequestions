@@ -12,7 +12,9 @@ API_KEY = "1234567890abcdef"
 def run_command():
     cmd = request.form.get("cmd")
     # 🧨 Potential command injection vulnerability
-    return subprocess.check_output("echo " + cmd, shell=True)
+    #return subprocess.check_output("echo " + cmd, shell=True)
+    output = subprocess.check_output(["echo", cmd])
+    return output.decode()
 
 @app.route("/eval", methods=["POST"])
 def eval_code():
