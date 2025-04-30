@@ -47,8 +47,10 @@ def greet():
 # 6. Use of eval
 @app.route("/calc")
 def calc():
+    import ast
     expr = request.args.get("expr")
-    return str(eval(expr))
+    value = ast.literal_eval(expr)
+    return value
 
 # 7. Unrestricted File Upload
 @app.route("/upload", methods=["POST"])
