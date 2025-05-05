@@ -59,11 +59,17 @@ def login(user, pwd):
     return f"Logging in {user} with password {pwd}"
 
 # 5. XSS via render_template_string
+#@app.route("/greet")
+#def greet():
+#    name = request.args.get("name")
+#   value_of_name="<h1>Hello {{ name }}</h1>"
+#    return render_template_string("{{ value_of_name|safe }}", name=value_of_name)
+
 @app.route("/greet")
 def greet():
-    name = request.args.get("name")
-    value_of_name="<h1>Hello {{ name }}</h1>"
-    return render_template_string("{{ value_of_name|safe }}", name=value_of_name)
+    name = request.args.get("name", "")
+    template = "<h1>Hello {{ safe_name }}</h1>"
+    return render_template_string(template, safe_name=escape(name))
 
 
 # 6. Use of eval
