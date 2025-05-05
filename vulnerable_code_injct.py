@@ -52,7 +52,13 @@ def login(user, pwd):
 @app.route("/greet")
 def greet():
     name = request.args.get("name")
-    return render_template_string("<h1>Hello {{ name }}</h1>", name=name)
+    value_of_name="<h1>Hello {{ name }}</h1>"
+    return render_template_string("{{ value_of_name|safe }}", name=value_of_name)
+
+
+def preview():
+    content = "<p>This is a preview of your content.</p>"
+    return render_template_string("{{ content|safe }}", content=content)
 
 # 6. Use of eval
 @app.route("/calc")
