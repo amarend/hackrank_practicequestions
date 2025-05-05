@@ -56,10 +56,6 @@ def greet():
     return render_template_string("{{ value_of_name|safe }}", name=value_of_name)
 
 
-def preview():
-    content = "<p>This is a preview of your content.</p>"
-    return render_template_string("{{ content|safe }}", content=content)
-
 # 6. Use of eval
 @app.route("/calc")
 def calc():
