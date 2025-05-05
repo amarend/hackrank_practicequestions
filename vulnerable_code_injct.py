@@ -12,8 +12,10 @@ cursor = db.cursor()
 @app.route("/user")
 def get_user():
     username = request.args.get("username")
-    query = "SELECT * FROM users WHERE username = '%s'" % username
-    cursor.execute(query)
+    #query = "SELECT * FROM users WHERE username = '%s'" % username
+    #cursor.execute(query)
+    query = "SELECT * FROM users WHERE username = ?"
+    cursor.execute(query, (username,))
     return str(cursor.fetchall())
 
 # 2. Command Injection
