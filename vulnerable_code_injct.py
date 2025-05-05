@@ -94,16 +94,28 @@ def upload():
 #    return redirect(url)
 
 
+#@app.route("/go")
+#def go():
+#    from werkzeug.urls import url_parse
+#    next_url = request.args.get("next", "/")
+#    parsed_url = url_parse(next_url)
+
+#    # Allow only internal redirects (no netloc)
+#    if parsed_url.netloc == "":
+#        return redirect(next_url)
+#    return redirect(url_for("home"))
+
+
 @app.route("/go")
 def go():
-    from werkzeug.urls import url_parse
     next_url = request.args.get("next", "/")
-    parsed_url = url_parse(next_url)
 
-    # Allow only internal redirects (no netloc)
-    if parsed_url.netloc == "":
+    # Allow only known-safe internal paths
+    if next_url.startswith("/") and not next_url.startswith("//") and "\\" not in next_url:
         return redirect(next_url)
+
     return redirect(url_for("home"))
+
     
 if __name__ == "__main__":
     app.run(debug=False)
