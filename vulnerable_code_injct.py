@@ -70,11 +70,23 @@ def upload():
     return "File uploaded!"
 
 # 8. Unvalidated Redirect
+#@app.route("/go")
+#def go():
+#    url = request.args.get("next")
+#    return redirect(url)
+
+
 @app.route("/go")
 def go():
-    url = request.args.get("next")
-    return redirect(url)
+    from werkzeug.urls import url_parse
+    next_url = request.args.get("next", "/")
+    parsed_url = url_parse(next_url)
 
+    # Allow only internal redirects (no netloc)
+    if parsed_url.netloc == "":
+        return redirect(next_url)
+    return redirect(url_for("home"))
+    
 if __name__ == "__main__":
     app.run(debug=True)
 
