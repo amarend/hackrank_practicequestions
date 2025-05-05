@@ -1,22 +1,32 @@
-from flask import Flask, request, render_template_string, redirect
+from flask import Flask, request, render_template_string, redirect, jsonify
 import subprocess
 import pickle
 import sqlite3
 import os
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 db = sqlite3.connect(':memory:', check_same_thread=False)
 cursor = db.cursor()
 
 # 1. SQL Injection
+#@app.route("/user")
+#def get_user():
+#    username = request.args.get("username")
+#    #query = "SELECT * FROM users WHERE username = '%s'" % username
+#    #cursor.execute(query)
+#    query = "SELECT * FROM users WHERE username = ?"
+#    cursor.execute(query, (username,))
+#    return str(cursor.fetchall())
+
 @app.route("/user")
 def get_user():
     username = request.args.get("username")
-    #query = "SELECT * FROM users WHERE username = '%s'" % username
-    #cursor.execute(query)
-    query = "SELECT * FROM users WHERE username = ?"
-    cursor.execute(query, (username,))
-    return str(cursor.fetchall())
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({'id': user.id, 'username': user.username})
+    else:
+        return jsonify({'error': 'User not found'}), 404
 
 # 2. Command Injection
 @app.route("/ping")
